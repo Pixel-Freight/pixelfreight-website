@@ -161,6 +161,16 @@ const FollowCursor: React.FC<FollowCursorProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    const getComputedColor = (colorVar: string): string => {
+      if (typeof window === 'undefined') return '#7443f4';
+      const style = getComputedStyle(document.documentElement);
+      if (colorVar.startsWith('var(')) {
+        const varName = colorVar.replace('var(', '').replace(')', '').trim();
+        return style.getPropertyValue(varName).trim() || '#7443f4';
+      }
+      return colorVar;
+    };
+
     const buttons = Array.from(
       document.querySelectorAll(
         'button, a[href], [role="button"], [tabindex="0"]'
@@ -180,24 +190,15 @@ const FollowCursor: React.FC<FollowCursorProps> = ({
 
     resizeCanvas();
 
-    const getComputedColor = (colorVar: string) => {
-      if (typeof window === 'undefined') return '#7443f4';
-      const style = getComputedStyle(document.documentElement);
-      if (colorVar.startsWith('var(')) {
-        const varName = colorVar.replace('var(', '').replace(')', '').trim();
-        return style.getPropertyValue(varName) || '#7443f4';
-      }
-      return colorVar;
-    };
-
     const resolvedColor = getComputedColor(color);
+    const targetColor = getComputedColor('var(--primary)');
 
     squareRef.current = new Square({
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
       size,
       color: resolvedColor,
-      targetColor: resolvedColor,
+      targetColor: targetColor,
       isNearButton: false,
     });
 

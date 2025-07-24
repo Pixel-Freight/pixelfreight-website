@@ -37,12 +37,12 @@ export function Hero() {
                     </div>
 
                     {/* Main heading */}
-                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80 leading-[1.1] py-1">
+                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80 leading-[1.1] py-1">
                         <span className="block mb-4">Loading Excellence</span>
                     </h1>
 
                     {/* Description */}
-                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12">
+                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-20">
                         pixels by pixels.
                     </p>
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 export function Creations() {
   const mountRef = useRef<HTMLDivElement>(null)
@@ -10,15 +10,18 @@ export function Creations() {
   useEffect(() => {
     if (!mountRef.current) return
 
+    const rendererRef = {
+      current: new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    }
+
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / 500, 0.1, 1000)
     camera.position.set(0, 20, 40)
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setSize(window.innerWidth, 500)
-    mountRef.current.appendChild(renderer.domElement)
+    rendererRef.current.setSize(window.innerWidth, 500)
+    mountRef.current.appendChild(rendererRef.current.domElement)
 
-    const controls = new OrbitControls(camera, renderer.domElement)
+    const controls = new OrbitControls(camera, rendererRef.current.domElement)
     controls.enableDamping = true
     controls.dampingFactor = 0.05
     controls.autoRotate = true
@@ -29,7 +32,6 @@ export function Creations() {
     const rows = 50
     const cols = 50
     const spacing = 1.5
-    const terrainSize = spacing * rows
 
     const group = new THREE.Group()
 
@@ -51,7 +53,7 @@ export function Creations() {
         }
         y += (Math.random() - 0.5) * 0.5 // random offset
 
-        const geometry = new THREE.SphereGeometry(0.2, 6, 6)
+        const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1)
         const material = new THREE.MeshBasicMaterial({ color: '#7443f4' })
         const dot = new THREE.Mesh(geometry, material)
 
@@ -65,7 +67,7 @@ export function Creations() {
     const animate = () => {
       requestAnimationFrame(animate)
       controls.update()
-      renderer.render(scene, camera)
+      rendererRef.current.render(scene, camera)
     }
 
     animate()
@@ -73,14 +75,20 @@ export function Creations() {
     const handleResize = () => {
       camera.aspect = window.innerWidth / 500
       camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, 500)
+      rendererRef.current.setSize(window.innerWidth, 500)
     }
 
     window.addEventListener('resize', handleResize)
 
     return () => {
       window.removeEventListener('resize', handleResize)
-      mountRef.current?.removeChild(renderer.domElement)
+      if (mountRef.current && rendererRef.current.domElement) {
+        rendererRef.current.dispose()
+        if (mountRef.current.contains(rendererRef.current.domElement)) {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          mountRef.current.removeChild(rendererRef.current.domElement)
+        }
+      }
     }
   }, [])
 

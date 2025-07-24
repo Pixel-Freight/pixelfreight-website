@@ -1,6 +1,6 @@
 // src/app/page.tsx
 import { Hero } from '@/components/home/hero';
-import { AboutUs } from '@/components/home/aboutus';
+import { AboutUs } from '@/components/home/about';
 import { Creations } from '@/components/home/creations';
 
 export default function Home() {
