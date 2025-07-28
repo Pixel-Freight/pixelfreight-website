@@ -1,127 +1,81 @@
 import * as React from 'react';
-import { Code, Layout, Smartphone, PenTool, BarChart, Globe } from 'lucide-react';
 
 interface Service {
-    icon: React.ComponentType<{ className?: string }>;
-    title: string;
-    description: string;
-    features: string[];
+  label: string;
+  image: string;
+}
+
+interface ServiceListProps {
+  config: Service[];
 }
 
 const services: Service[] = [
-    {
-        icon: Code,
-        title: 'Web Development',
-        description: 'Custom websites and web applications built with modern technologies for optimal performance and scalability.',
-        features: [
-            'Custom Web Applications',
-            'E-commerce Solutions',
-            'CMS Development',
-            'API Integration',
-            'Progressive Web Apps'
-        ]
-    },
-    {
-        icon: Smartphone,
-        title: 'Mobile Development',
-        description: 'Native and cross-platform mobile applications that deliver seamless user experiences across all devices.',
-        features: [
-            'iOS & Android Apps',
-            'React Native Development',
-            'UI/UX Design',
-            'App Maintenance',
-            'App Store Optimization'
-        ]
-    },
-    {
-        icon: Layout,
-        title: 'UI/UX Design',
-        description: 'User-centered design solutions that combine aesthetics with functionality for exceptional digital experiences.',
-        features: [
-            'User Research',
-            'Wireframing & Prototyping',
-            'Interaction Design',
-            'Usability Testing',
-            'Design Systems'
-        ]
-    },
-    {
-        icon: PenTool,
-        title: 'Branding',
-        description: 'Comprehensive branding solutions that establish a strong and memorable brand identity.',
-        features: [
-            'Logo Design',
-            'Brand Guidelines',
-            'Visual Identity',
-            'Brand Strategy',
-            'Marketing Materials'
-        ]
-    },
-    {
-        icon: BarChart,
-        title: 'Digital Marketing',
-        description: 'Data-driven marketing strategies to increase your online presence and drive conversions.',
-        features: [
-            'SEO & Content Strategy',
-            'Social Media Marketing',
-            'Email Campaigns',
-            'PPC Advertising',
-            'Analytics & Reporting'
-        ]
-    },
-    {
-        icon: Globe,
-        title: 'Web Hosting & Maintenance',
-        description: 'Reliable hosting solutions and ongoing maintenance to keep your website running smoothly.',
-        features: [
-            'Cloud Hosting',
-            'SSL Certificates',
-            'Regular Backups',
-            'Security Updates',
-            'Performance Optimization'
-        ]
-    }
+  {
+    label: 'Web Development',
+    image: 'https://placeimg.dev/400x300?text=Web+Development',
+  },
+  {
+    label: 'Mobile Development',
+    image: 'https://placeimg.dev/400x300?text=Mobile+Development',
+  },
+  {
+    label: 'UI/UX Design',
+    image: 'https://placeimg.dev/400x300?text=UI/UX+Design',
+  },
+  {
+    label: 'Branding',
+    image: 'https://placeimg.dev/400x300?text=Branding',
+  },
+  {
+    label: 'Digital Marketing',
+    image: 'https://placeimg.dev/400x300?text=Digital+Marketing',
+  },
+  {
+    label: 'Web Hosting & Maintenance',
+    image: 'https://placeimg.dev/400x300?text=Web+Hosting+Maintenance',
+  },
 ];
 
-export function ServiceList() {
-    return (
-        <section className="py-20 bg-white">
-            <div className="container mx-auto px-4">
-                <div className="max-w-4xl mx-auto text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-                    <p className="text-xl text-gray-600">
-                        Comprehensive digital solutions tailored to your business needs
-                    </p>
-                </div>
+export function ServiceList({ config = services }: ServiceListProps) {
+  const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {services.map((service, index) => {
-                        const Icon = service.icon;
-                        return (
-                            <div
-                                key={index}
-                                className="group bg-gray-50 rounded-xl p-8 hover:bg-white hover:shadow-lg transition-all duration-300 border border-gray-100"
-                            >
-                                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                    <Icon className="w-6 h-6" />
-                                </div>
-                                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                                <p className="text-gray-600 mb-4">{service.description}</p>
-                                <ul className="space-y-2 mt-4">
-                                    {service.features.map((feature, i) => (
-                                        <li key={i} className="flex items-center text-gray-600">
-                                            <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        );
-                    })}
-                </div>
+  return (
+    <section className="w-full px-6 md:px-12 lg:px-18 pb-20">
+      <div className="flex flex-col divide-y divide-gray-700 border-y border-gray-700">
+        {config.map((service, idx) => (
+          <div
+            key={service.label}
+            className="relative flex items-center min-h-[80px] md:min-h-[120px] group transition-colors duration-200"
+            onMouseEnter={() => setHoveredIndex(idx)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onFocus={() => setHoveredIndex(idx)}
+            onBlur={() => setHoveredIndex(null)}
+            tabIndex={0}
+          >
+            {/* Centered text always */}
+            <div className="w-full flex justify-center">
+              <span
+                className={`py-6 md:py-10 font-mono text-xs md:text-base tracking-widest transition-colors duration-200 ${
+                  hoveredIndex === idx ? 'text-[#a78bfa]' : 'text-gray-200'
+                }`}
+              >
+                {service.label}
+              </span>
             </div>
-        </section>
-    );
+            {/* Image on hover, right beside centered text, does not affect centering */}
+            {hoveredIndex === idx && (
+              <div className="absolute left-1/2 top-1/2 ml-4 md:ml-8" style={{ transform: 'translate(60%, -50%)' }}>
+                <img
+                  src={service.image}
+                  alt={service.label}
+                  className="w-40 md:w-56 rounded-lg shadow-lg border border-gray-800"
+                  style={{ maxHeight: '100px', objectFit: 'cover' }}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }

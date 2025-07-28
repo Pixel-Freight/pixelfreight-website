@@ -1,108 +1,26 @@
 import * as React from 'react';
-import { MapPin, Mail, Phone, Clock, Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-
-const contactInfo = [
-    {
-        icon: MapPin,
-        title: 'Our Location',
-        description: '123 Design Street, Creative District, San Francisco, CA 94105',
-        link: 'https://maps.google.com',
-        linkText: 'View on Map',
-    },
-    {
-        icon: Mail,
-        title: 'Email Us',
-        description: 'contact@pixelfreight.com',
-        link: 'mailto:contact@pixelfreight.com',
-        linkText: 'Send an Email',
-    },
-    {
-        icon: Phone,
-        title: 'Call Us',
-        description: '+1 (555) 123-4567',
-        link: 'tel:+15551234567',
-        linkText: 'Call Now',
-    },
-    {
-        icon: Clock,
-        title: 'Working Hours',
-        description: 'Monday - Friday: 9:00 AM - 6:00 PM',
-        additional: 'Saturday: 10:00 AM - 4:00 PM',
-        link: '#',
-        linkText: 'Book a Call',
-    },
-];
-
-const socialLinks = [
-    { icon: Facebook, url: 'https://facebook.com' },
-    { icon: Twitter, url: 'https://twitter.com' },
-    { icon: Instagram, url: 'https://instagram.com' },
-    { icon: Linkedin, url: 'https://linkedin.com' },
-    { icon: Youtube, url: 'https://youtube.com' },
-];
 
 export function ContactInfo() {
-    return (
-        <div className="bg-gray-50 rounded-xl p-8 h-full">
-            <h2 className="text-2xl font-bold mb-8 text-gray-900">Contact Information</h2>
-
-            <div className="space-y-6">
-                {contactInfo.map((item, index) => {
-                    const Icon = item.icon;
-                    return (
-                        <div key={index} className="flex items-start">
-                            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-4 mt-1">
-                                <Icon className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <h3 className="font-medium text-gray-900">{item.title}</h3>
-                                <p className="text-gray-600 mt-1">{item.description}</p>
-                                {item.additional && <p className="text-gray-600 text-sm">{item.additional}</p>}
-                                <a
-                                    href={item.link}
-                                    className="inline-block mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {item.linkText} →
-                                </a>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-
-            <div className="mt-12">
-                <h3 className="font-medium text-gray-900 mb-4">Follow Us</h3>
-                <div className="flex space-x-4">
-                    {socialLinks.map((social, index) => {
-                        const Icon = social.icon;
-                        return (
-                            <a
-                                key={index}
-                                href={social.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                            >
-                                <Icon className="w-5 h-5" />
-                            </a>
-                        );
-                    })}
-                </div>
-            </div>
-
-            <div className="mt-12 bg-blue-50 p-6 rounded-lg">
-                <h3 className="font-medium text-gray-900 mb-3">Need immediate assistance?</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                    Our support team is here to help you with any questions or concerns you may have.
-                </p>
-                <Button variant="default" className="w-full">
-                    <Phone className="w-4 h-4 mr-2" />
-                    Call Support
-                </Button>
-            </div>
-        </div>
-    );
+  return (
+    <div className="flex flex-col justify-center items-start md:items-end h-full">
+      <div className="max-w-md text-sm text-gray-300 mb-8 text-right tracking-widest">
+        Got a project in mind? Questions? Ideas? We’d love to hear from you. Reach out and let’s start creating something amazing.
+      </div>
+      <div className="text-xs text-gray-400 mb-4 text-right w-full flex justify-end flex-row">
+        <a href="mailto:hello@pixelfreight.com" className="hover:text-purple-400 transition">
+          hello@pixelfreight.com
+        </a>
+        <span className="flex ml-4">
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 mx-1">
+            {/* Instagram SVG */}
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.25.75a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" /></svg>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 mx-1">
+            {/* LinkedIn SVG */}
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.785-1.75-1.75 0-.966.784-1.75 1.75-1.75s1.75.784 1.75 1.75c0 .965-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.026-3.063-1.868-3.063-1.869 0-2.156 1.459-2.156 2.968v5.699h-3v-10h2.881v1.367h.041c.401-.761 1.379-1.563 2.841-1.563 3.039 0 3.6 2.001 3.6 4.6v5.596z" /></svg>
+          </a>
+        </span>
+      </div>
+    </div>
+  );
 }

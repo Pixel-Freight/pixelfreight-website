@@ -1,32 +1,15 @@
 import * as React from 'react';
-import { Button } from '@/components/ui/button';
+
 
 export function ContactHero() {
-    return (
-        <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-800 text-white">
-            <div className="container mx-auto px-4 relative z-10">
-                <div className="max-w-4xl mx-auto text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                        Let&apos;s Talk About Your Project
-                    </h1>
-                    <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto opacity-90">
-                        Ready to start your next project? Have questions about our services? We&apos;d love to hear from you.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-4">
-                        <a href="#contact-form">
-                            <Button variant="default" size="lg" className="text-lg">
-                                Send a Message
-                            </Button>
-                        </a>
-                        <Button variant="bordered" size="lg" className="text-lg text-white border-white hover:text-white">
-                            Call Us Now
-                        </Button>
-                    </div>
-                </div>
-            </div>
-            <div className="absolute inset-0 opacity-20">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-            </div>
-        </section>
-    );
+  return (
+    <>
+      <span className="text-purple-400 text-sm font-medium mb-4 tracking-widest block">
+        connect with us
+      </span>
+      <h1 className="text-4xl md:text-5xl lg:text-7xl mb-2 leading-tight">
+        Let’s Build Something <br /> Great Together
+      </h1>
+    </>
+  );
 }

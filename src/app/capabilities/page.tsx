@@ -1,3 +1,5 @@
+'use client'
+
 import { CapabilitiesHero, ServiceList, Process } from '@/components/capabilities';
 
 export default function CapabilitiesPage() {
@@ -9,3 +11,4 @@ export default function CapabilitiesPage() {
         </div>
     );
 }
+ 

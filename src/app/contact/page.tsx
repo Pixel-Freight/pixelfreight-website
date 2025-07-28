@@ -4,9 +4,9 @@ import { ContactInfo } from '@/components/contact/contact-info';
 
 export default function ContactPage() {
     return (
-        <div>
+        <div className=" px-6 md:px-12 lg:px-18">
             <ContactHero />
-            <div className="container mx-auto px-4 py-16 grid md:grid-cols-2 gap-12">
+            <div className="mx-auto py-16 grid md:grid-cols-2 gap-12">
                 <ContactForm />
                 <ContactInfo />
             </div>
