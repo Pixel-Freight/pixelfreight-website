@@ -21,7 +21,7 @@ export function AboutHero() {
                     </div>
                     <div className="w-full md:w-1/2 flex md:justify-end mt-8 md:mt-0">
                         <p className="text-xs md:text-sm text-right text-white/80 max-w-md font-mono">
-                            We're a passionate team of creators and problem-solvers dedicated to turning innovative ideas into exceptional digital experiences that drive real business results.
+                            We&apos;re a passionate team of creators and problem-solvers dedicated to turning innovative ideas into exceptional digital experiences that drive real business results.
                         </p>
                     </div>
                 </div>

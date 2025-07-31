@@ -12,7 +12,6 @@ interface SquareProps {
   y: number;
   size: number;
   color: string;
-  targetColor: string;
   isNearButton: boolean;
 }
 
@@ -20,7 +19,6 @@ class Square {
   position: Position;
   size: number;
   color: string;
-  targetColor: string;
   currentColor: string;
   isNearButton: boolean;
   rotation: number;
@@ -31,7 +29,6 @@ class Square {
     this.position = { x, y };
     this.size = size;
     this.color = color;
-    this.targetColor = targetColor;
     this.currentColor = color;
     this.isNearButton = isNearButton;
     this.rotation = 0;
@@ -69,30 +66,15 @@ class Square {
           this.position.x += (buttonCenter.x - this.position.x) * strength;
           this.position.y += (buttonCenter.y - this.position.y) * strength;
 
-          // Extract button background color
-          const computedStyle = window.getComputedStyle(button);
-          const bgColor = computedStyle.backgroundColor;
-
-          // Convert rgb/rgba to hex
-          const rgbMatch = bgColor.match(/\d+/g);
-          if (rgbMatch && rgbMatch.length >= 3) {
-            const [r, g, b] = rgbMatch.map(Number);
-            this.targetColor = `#${((1 << 24) + (r << 16) + (g << 8) + b)
-              .toString(16)
-              .slice(1)}`;
-          }
         }
       });
     }
 
     this.isNearButton = isNearAnyButton;
 
-    // Smooth color transition
-    const nextColor = this.isNearButton ? this.targetColor : this.color;
-    this.currentColor = this.lerpColor(this.currentColor, nextColor, 0.1);
-
+    this.currentColor = this.color
     this.rotation += this.rotationSpeed;
-    this.opacity = this.isNearButton ? 0.5 : 1;
+    this.opacity = this.isNearButton ? 1 : 1;
   }
 
   draw(context: CanvasRenderingContext2D) {
@@ -106,24 +88,22 @@ class Square {
       // Default state: transparent fill, white border
       context.globalAlpha = this.opacity;
       context.strokeStyle = '#ffffff';
-      context.lineWidth = 2;
+      context.lineWidth = 1;
       context.fillStyle = 'transparent';
       context.beginPath();
       context.rect(-halfSize, -halfSize, this.size, this.size);
       context.fill();
       context.stroke();
     } else {
-      // Near button: colored fill
+      // Near button: become bigger
       context.globalAlpha = this.opacity;
-      context.fillStyle = this.currentColor;
-      context.fillRect(-halfSize, -halfSize, this.size, this.size);
-
-      // Optional dissolve effect
-      context.globalAlpha = 0.1;
-      context.fillStyle = '#ffffff';
+      context.strokeStyle = '#ffffff';
+      context.lineWidth = 2;
+      context.fillStyle = 'transparent';
       context.beginPath();
-      context.arc(0, 0, this.size * 1.5, 0, Math.PI * 2);
+      context.rect(-halfSize * 1.5, -halfSize * 1.5, this.size * 1.5, this.size * 1.5);
       context.fill();
+      context.stroke();
     }
 
     context.restore();
@@ -153,7 +133,7 @@ interface FollowCursorProps {
 
 const FollowCursor: React.FC<FollowCursorProps> = ({
   color = 'var(--primary)',
-  size = 20,
+  size = 10,
 }) => {
   const requestRef = useRef<number>(0);
   const squareRef = useRef<Square | null>(null);
@@ -191,14 +171,12 @@ const FollowCursor: React.FC<FollowCursorProps> = ({
     resizeCanvas();
 
     const resolvedColor = getComputedColor(color);
-    const targetColor = getComputedColor('var(--primary)');
 
     squareRef.current = new Square({
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
       size,
       color: resolvedColor,
-      targetColor: targetColor,
       isNearButton: false,
     });
 

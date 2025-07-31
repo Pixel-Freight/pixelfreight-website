@@ -1,45 +1,71 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Globe from 'globe.gl'
-import { generateDots } from '@/utils/generatedots'
+import dynamic from 'next/dynamic'
 
-export function AboutUs() {
+// Only import Globe when needed
+const Globe = dynamic(
+  () => import('globe.gl'),
+  { ssr: false }
+)
+
+interface AboutUsProps {
+  enable3D?: boolean;
+}
+
+export function AboutUs({ enable3D = true }: AboutUsProps) {
   const globeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!globeRef.current) return
+    if (!enable3D || !globeRef.current) return
 
-    const globe = new Globe(globeRef.current)
-      .globeImageUrl('')
-      .backgroundColor('#000')
-      .showAtmosphere(false)
-      .pointOfView({ lat: 20, lng: 0, altitude: 2 }, 0)
+    let globe: any;
 
-    // Add dots
-    const dots = generateDots(1000)
-    globe
-      .pointsData(dots)
-      .pointLat('lat')
-      .pointLng('lng')
-      .pointAltitude(0.01)
-      .pointColor(() => '#a15fff')
-      .pointRadius('size')
-      .pointsMerge(true)
+    // Dynamically import and initialize the globe
+    import('globe.gl').then(({ default: Globe }) => {
+      if (!globeRef.current) return;
 
-    // Auto-rotate
-    globe.controls().autoRotate = true
-    globe.controls().autoRotateSpeed = 0.6
+      globe = new Globe(globeRef.current)
+        .globeImageUrl('')
+        .backgroundColor('#000')
+        .showAtmosphere(false)
+        .pointOfView({ lat: 20, lng: 0, altitude: 2 }, 0)
 
-    // Resize handling
-    const resize = () => {
-      globe.width(globeRef.current!.clientWidth)
-      globe.height(globeRef.current!.clientHeight)
-    }
-    resize()
-    window.addEventListener('resize', resize)
-    return () => window.removeEventListener('resize', resize)
-  }, [])
+      // Add dots
+      const dots = generateDots(1000)
+      globe
+        .pointsData(dots)
+        .pointLat('lat')
+        .pointLng('lng')
+        .pointAltitude(0.01)
+        .pointColor(() => '#a15fff')
+        .pointRadius('size')
+        .pointsMerge(true)
+
+      // Auto-rotate
+      globe.controls().autoRotate = true
+      globe.controls().autoRotateSpeed = 0.6
+
+      // Resize handling
+      const resize = () => {
+        globe.width(globeRef.current!.clientWidth)
+        globe.height(globeRef.current!.clientHeight)
+      }
+      resize()
+      window.addEventListener('resize', resize)
+
+      return () => {
+        window.removeEventListener('resize', resize)
+        if (globe) {
+          // Clean up the globe instance
+          const parent = globeRef.current?.parentElement
+          if (parent && parent.contains(globeRef.current)) {
+            parent.removeChild(globeRef.current)
+          }
+        }
+      }
+    })
+  }, [enable3D])
 
   return (
     <section className="w-full min-h-screen bg-black text-white px-6 md:px-12 lg:px-18 py-20 flex flex-col md:flex-row items-center justify-between gap-12">
@@ -55,11 +81,30 @@ export function AboutUs() {
 
       {/* Globe Section */}
       <div className="md:w-1/2 w-full h-[300px] md:h-[500px] relative basis-1/2 xl:basis-1/3">
-        <div ref={globeRef} className="w-full h-full" />
+        {enable3D ? (
+          <div ref={globeRef} className="w-full h-full" />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-purple-900/50 to-black/50 rounded-lg flex items-center justify-center">
+            <p className="text-gray-400 text-center p-4">3D Globe Disabled</p>
+          </div>
+        )}
         <p className="text-gray-300 hidden md:block absolute bottom-0 left-0 right-0 px-4 text-center md:text-right">
           We specialize in crafting mesmerizing web applications that don&apos;t break the bank. We deliver premium quality at accessible prices, because great design shouldn&apos;t be a luxury.
         </p>
       </div>
     </section>
   )
+}
+
+// Moved outside the component to prevent recreation on each render
+function generateDots(count: number) {
+  const dots = []
+  for (let i = 0; i < count; i++) {
+    dots.push({
+      lat: (Math.random() - 0.5) * 170,
+      lng: (Math.random() - 0.5) * 340,
+      size: Math.random() * 0.5 + 0.5
+    })
+  }
+  return dots
 }
