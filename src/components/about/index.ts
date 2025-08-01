@@ -1,5 +1,6 @@
 // src/components/home/index.ts
 export * from "./hero";
-export * from "./our-story";
-export * from "./values";
-export * from "./team";
+export * from "./cta";
+export * from "./principles";
+export * from "./statistics";
+export * from "./social-media";

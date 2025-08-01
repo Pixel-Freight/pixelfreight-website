@@ -10,7 +10,7 @@ export function AboutHero() {
                             Our Story, Your Success
                         </span>
                         <h1 className="text-4xl md:text-6xl font-light text-white leading-tight mb-8 md:mb-0">
-                            Who We Are
+                            From Idea to Impact. Your Vision, Realized.
                         </h1>
                     </div>
                 </div>
@@ -21,7 +21,7 @@ export function AboutHero() {
                     </div>
                     <div className="w-full md:w-1/2 flex md:justify-end mt-8 md:mt-0">
                         <p className="text-xs md:text-sm text-right text-white/80 max-w-md font-mono">
-                            We&apos;re a passionate team of creators and problem-solvers dedicated to turning innovative ideas into exceptional digital experiences that drive real business results.
+                            We&apos;re a collective of thinkers, creators, and problem-solvers dedicated to bridging the gap between a powerful vision and a remarkable reality. We exist to build what&apos;s next, together.
                         </p>
                     </div>
                 </div>
