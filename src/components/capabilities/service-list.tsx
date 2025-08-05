@@ -1,3 +1,4 @@
+import gsap from 'gsap';
 import * as React from 'react';
 
 interface Service {
@@ -6,7 +7,7 @@ interface Service {
 }
 
 interface ServiceListProps {
-  config: Service[];
+  config?: Service[];
 }
 
 const services: Service[] = [
@@ -37,45 +38,90 @@ const services: Service[] = [
 ];
 
 export function ServiceList({ config = services }: ServiceListProps) {
-  const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
+  const [hovered, setHovered] = React.useState<{
+    idx: number | null;
+    image: string;
+    label: string;
+  }>({ idx: null, image: '', label: '' });
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const imageRef = React.useRef<HTMLImageElement>(null);
+  const [showImage, setShowImage] = React.useState(false);
+
+  // Animate image position and opacity with GSAP
+  const animateImage = (x: number, y: number, opacity: number) => {
+    if (imageRef.current) {
+      gsap.to(imageRef.current, {
+        x,
+        y,
+        opacity,
+        duration: 0.3,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      });
+    }
+  };
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || !imageRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const relX = e.clientX - rect.left;
+    const relY = e.clientY - rect.top;
+    animateImage(relX - imageRef.current.offsetWidth / 2, relY - imageRef.current.offsetHeight / 2, 1);
+  };
+
+  const handleEnter = (idx: number, service: Service) => {
+    setHovered({ idx, image: service.image, label: service.label });
+    setShowImage(true);
+    // Fade in image at initial position
+    if (imageRef.current) {
+      gsap.set(imageRef.current, { opacity: 0 });
+    }
+  };
+
+  const handleLeave = () => {
+    setShowImage(false);
+    if (imageRef.current) {
+      gsap.to(imageRef.current, { opacity: 0, duration: 0.2 });
+    }
+    setHovered({ idx: null, image: '', label: '' });
+  };
 
   return (
-    <section className="w-full px-6 md:px-12 lg:px-18 pb-20">
+    <section
+      ref={containerRef}
+      className="w-full px-6 md:px-12 lg:px-18 pb-20 relative"
+      onMouseMove={showImage ? handleMove : undefined}
+    >
       <div className="flex flex-col divide-y divide-gray-700 border-y border-gray-700">
         {config.map((service, idx) => (
           <div
             key={service.label}
             className="relative flex items-center min-h-[80px] md:min-h-[120px] group transition-colors duration-200"
-            onMouseEnter={() => setHoveredIndex(idx)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            onFocus={() => setHoveredIndex(idx)}
-            onBlur={() => setHoveredIndex(null)}
+            onMouseEnter={() => handleEnter(idx, service)}
+            onMouseLeave={handleLeave}
+            onFocus={() => handleEnter(idx, service)}
+            onBlur={handleLeave}
             tabIndex={0}
           >
-            {/* Centered text always */}
             <div className="w-full flex justify-center">
               <span
-                className={`py-6 md:py-10 font-mono text-xs md:text-base tracking-widest transition-colors duration-200 ${
-                  hoveredIndex === idx ? 'text-[#a78bfa]' : 'text-gray-200'
-                }`}
+                className={`py-6 md:py-10 font-mono text-xs md:text-base tracking-widest transition-colors duration-200 ${hovered.idx === idx ? 'text-[#a78bfa]' : 'text-gray-200'
+                  }`}
               >
                 {service.label}
               </span>
             </div>
-            {/* Image on hover, right beside centered text, does not affect centering */}
-            {hoveredIndex === idx && (
-              <div className="absolute left-1/2 top-1/2 ml-4 md:ml-8" style={{ transform: 'translate(60%, -50%)' }}>
-                <img
-                  src={service.image}
-                  alt={service.label}
-                  className="w-40 md:w-56 rounded-lg shadow-lg border border-gray-800"
-                  style={{ maxHeight: '100px', objectFit: 'cover' }}
-                />
-              </div>
-            )}
           </div>
         ))}
       </div>
+      {/* Animated image that follows cursor on hover (GSAP) */}
+      <img
+        ref={imageRef}
+        src={hovered.image}
+        alt={hovered.label}
+        className="w-40 md:w-56 rounded-lg shadow-lg border border-gray-800 pointer-events-none absolute top-0 left-0 z-50"
+        style={{ display: showImage ? 'block' : 'none', opacity: 0 }}
+      />
     </section>
   );
 }
