@@ -138,6 +138,7 @@ export function ContactForm() {
           type="submit"
           className="mt-2 w-max"
           disabled={isSubmitting}
+          as="button"
         >
           {isSubmitting ? 'Sending...' : 'Send'}
           <ArrowUp className="ml-2 h-4 w-4" />

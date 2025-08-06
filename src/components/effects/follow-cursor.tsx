@@ -25,7 +25,7 @@ class Square {
   rotationSpeed: number;
   opacity: number;
 
-  constructor({ x, y, size, color, targetColor, isNearButton }: SquareProps) {
+  constructor({ x, y, size, color, isNearButton }: SquareProps) {
     this.position = { x, y };
     this.size = size;
     this.color = color;

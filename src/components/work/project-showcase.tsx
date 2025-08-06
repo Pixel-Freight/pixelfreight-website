@@ -79,12 +79,12 @@ export function ProjectShowcase() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="flex flex-col gap-8">
                     {filteredProjects.map((project) => (
                         <Link
                             key={project.id}
                             href={project.link}
-                            className="group rounded-xl overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:shadow-lg"
+                            className="group w-full rounded-xl overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:shadow-lg flex flex-col md:flex-row"
                             style={{
                                 backgroundColor: 'var(--background)',
                                 border: '1px solid var(--primary)',
@@ -92,27 +92,29 @@ export function ProjectShowcase() {
                             }}
                         >
                             <div
-                                className="h-48 w-full bg-cover bg-center"
+                                className="h-64 md:h-auto md:w-1/3 bg-cover bg-center"
                                 style={{ backgroundImage: `url(${project.image})` }}
                             />
-                            <div className="p-6">
-                                <h3 className="text-xl font-bold mb-3 group-hover:text-[var(--accent)] transition-colors">
+                            <div className="p-6 md:w-2/3">
+                                <h3 className="text-2xl font-bold mb-3 group-hover:text-[var(--accent)] transition-colors">
                                     {project.title}
                                 </h3>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap gap-2 mb-4">
                                     {project.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className="text-xs px-3 py-1 rounded-full"
+                                            className="px-3 py-1 text-sm rounded-full"
                                             style={{
-                                                backgroundColor: 'var(--primary)',
-                                                color: 'var(--foreground)',
-                                                opacity: 0.9
+                                                backgroundColor: 'var(--primary/10)',
+                                                color: 'var(--primary)'
                                             }}
                                         >
                                             {tag}
                                         </span>
                                     ))}
+                                </div>
+                                <div className="text-muted-foreground group-hover:text-foreground transition-colors">
+                                    View Project →
                                 </div>
                             </div>
                         </Link>
