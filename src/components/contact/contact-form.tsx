@@ -136,7 +136,7 @@ export function ContactForm() {
 
         <Button
           type="submit"
-          className="mt-2 w-max"
+          className="mt-2 w-max cursor-pointer"
           disabled={isSubmitting}
           as="button"
         >
