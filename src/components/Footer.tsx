@@ -18,7 +18,7 @@ export default function Footer() {
                     <div className="flex flex-col items-center md:items-end space-y-4">
                         <div className="flex space-x-6">
                             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                                <Icon name="instagram" className="text-[var(--foreground)] hover:text-[var(--primary)] transition-colors" />
+                                <Icon name="instagram" size={20} strokeWidth={1} className="text-[var(--foreground)] hover:text-[var(--primary)] transition-colors" />
                             </a>
                             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                 <Icon name="linkedin" className="text-[var(--foreground)] hover:text-[var(--primary)] transition-colors" />
