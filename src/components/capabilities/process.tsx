@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Search, PenTool, Code, Smartphone, Rocket } from 'lucide-react';
+import { SplitTextReveal } from '../effects/split-text-reveal';
+import Link from 'next/link';
 
 interface ProcessStep {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
   description: string;
 }
-
 
 const processSteps: ProcessStep[] = [
   {
@@ -112,16 +113,24 @@ export function Process() {
           </div>
         </div>
         <div className="mt-20 text-center">
-          <h3 className="text-2xl font-bold mb-6 text-foreground">Ready to start your project?</h3>
+          <h3 className="text-2xl font-bold mb-6 text-foreground">
+            <SplitTextReveal>
+              Ready to start your project?
+            </SplitTextReveal>
+          </h3>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Get in touch with us to discuss how we can help bring your ideas to life.
+            <SplitTextReveal>
+              Get in touch with us to discuss how we can help bring your ideas to life.
+            </SplitTextReveal>
           </p>
-          <a
-            href="/contact"
+          <Link
+            href="/connect"
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 py-2"
           >
-            Contact Us
-          </a>
+            <SplitTextReveal>
+              Contact Us
+            </SplitTextReveal>
+          </Link>
         </div>
       </div>
       <style jsx>{`
