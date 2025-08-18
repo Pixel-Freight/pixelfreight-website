@@ -1,53 +1,25 @@
 "use client";
 
 import { useRef, useMemo } from 'react';
-import { Linkedin, Twitter, Instagram, Github, Dribbble, Figma } from 'lucide-react';
+import { Linkedin, Instagram } from 'lucide-react';
 import Blocks from '@/components/ui/blocks';
 import { ScrollReveal } from '@/components/effects/scroll-reveal'
 
 const socialMedia = [
   {
     name: 'LinkedIn',
-    url: 'https://linkedin.com',
+    url: 'https://linkedin.com/company/pixelfreight',
     icon: <Linkedin className="w-6 h-6" />,
     color: 'text-[#0077b5]',
     username: '@pixelfreight'
   },
   {
-    name: 'Twitter',
-    url: 'https://twitter.com',
-    icon: <Twitter className="w-6 h-6" />,
-    color: 'text-[#1DA1F2]',
-    username: '@pixelfreight'
-  },
-  {
     name: 'Instagram',
-    url: 'https://instagram.com',
+    url: 'https://instagram.com/pixelfreight',
     icon: <Instagram className="w-6 h-6" />,
     color: 'text-[#E1306C]',
     username: '@pixelfreight'
-  },
-  {
-    name: 'GitHub',
-    url: 'https://github.com',
-    icon: <Github className="w-6 h-6" />,
-    color: 'text-foreground',
-    username: 'pixelfreight'
-  },
-  {
-    name: 'Dribbble',
-    url: 'https://dribbble.com',
-    icon: <Dribbble className="w-6 h-6" />,
-    color: 'text-[#EA4C89]',
-    username: 'pixelfreight'
-  },
-  {
-    name: 'Figma',
-    url: 'https://figma.com',
-    icon: <Figma className="w-6 h-6" />,
-    color: 'text-[#F24E1E]',
-    username: '@pixelfreight'
-  },
+  }
 ];
 
 export function SocialMedia() {

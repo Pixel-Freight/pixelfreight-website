@@ -40,7 +40,7 @@ export function ScrollReveal({
       y: yOffset
     });
 
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: element,

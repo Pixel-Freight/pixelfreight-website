@@ -24,7 +24,7 @@ interface SplitTextRevealProps<T extends ElementType = "div"> {
 export function SplitTextReveal<T extends ElementType = "div">({
   children,
   className,
-  delay = 0,
+  delay = 0.2,
   yOffset = 20,
   duration = 0.7,
   stagger = 0.1,
@@ -43,7 +43,6 @@ export function SplitTextReveal<T extends ElementType = "div">({
       gsap.set(words, {
         opacity: 0,
         y: yOffset,
-        rotate: "random(-30, 30)",
         display: "inline-block",
         whiteSpace: "pre"
       });
@@ -58,7 +57,6 @@ export function SplitTextReveal<T extends ElementType = "div">({
             gsap.to(words, {
               opacity: 1,
               y: 0,
-              rotate: 0,
               duration: duration,
               delay,
               stagger: stagger,
@@ -69,7 +67,6 @@ export function SplitTextReveal<T extends ElementType = "div">({
             gsap.to(words, {
               opacity: 1,
               y: 0,
-              rotate: 0,
               duration: duration,
               stagger: stagger,
               ease: "back.out(1.2)"
