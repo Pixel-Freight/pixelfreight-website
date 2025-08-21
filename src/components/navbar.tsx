@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showPromo, setShowPromo] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const isPromoClosed = sessionStorage.getItem('promoClosed');
@@ -91,10 +92,59 @@ export function Navbar() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
             <span className="sr-only">Toggle menu</span>
           </Button>
+
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <div className="fixed inset-0 top-20 backdrop-blur-sm z-40 md:hidden">
+              <div className="flex flex-col items-center space-y-4 py-8 px-6 bg-background/95">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start text-lg"
+                  asChild
+                >
+                  <Link href="/work" onClick={() => setIsMenuOpen(false)}>Work</Link>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start text-lg"
+                  asChild
+                >
+                  <Link href="/capabilities" onClick={() => setIsMenuOpen(false)}>Capabilities</Link>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start text-lg"
+                  asChild
+                >
+                  <Link href="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
+                </Button>
+                <div className="w-full border-t border-border/40 my-2"></div>
+                <Button 
+                  variant="linkblock" 
+                  className="w-full justify-start text-lg gap-2"
+                  asChild
+                >
+                  <Link href="/connect" onClick={() => setIsMenuOpen(false)} className='flex items-center justify-between w-full'>
+                    <span>Connect</span>
+                    <SquareArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </header>
     </>
