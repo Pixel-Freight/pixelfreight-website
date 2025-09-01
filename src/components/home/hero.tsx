@@ -5,12 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { ScrollReveal } from '@/components/effects/scroll-reveal';
 
-// Dynamically import the components with no SSR
-const FollowCursor = dynamic(
-    () => import('@/components/effects/follow-cursor'),
-    { ssr: false }
-);
-
 const SpotlightGrid = dynamic(
     () => import('@/components/effects/spotlight-grid'),
     { ssr: false }
@@ -60,9 +54,6 @@ export function Hero() {
                         </div>
                     </div>
                 </div>
-
-                {/* Follow Cursor Effect */}
-                <FollowCursor color="#007bff" />
             </section>
         </ScrollReveal>
     );

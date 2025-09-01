@@ -24,14 +24,6 @@ const services: Service[] = [
     image: 'https://placeimg.dev/400x300?text=UI/UX+Design',
   },
   {
-    label: 'Branding',
-    image: 'https://placeimg.dev/400x300?text=Branding',
-  },
-  {
-    label: 'Digital Marketing',
-    image: 'https://placeimg.dev/400x300?text=Digital+Marketing',
-  },
-  {
     label: 'Web Hosting & Maintenance',
     image: 'https://placeimg.dev/400x300?text=Web+Hosting+Maintenance',
   },
