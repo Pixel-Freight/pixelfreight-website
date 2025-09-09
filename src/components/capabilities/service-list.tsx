@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import * as React from 'react';
+import Image from 'next/image'
 
 interface Service {
   label: string;
@@ -13,19 +14,19 @@ interface ServiceListProps {
 const services: Service[] = [
   {
     label: 'Web Development',
-    image: 'https://placeimg.dev/400x300?text=Web+Development',
+    image: '/images/capabilities/webdev-pixelfreight.png',
   },
   {
     label: 'Mobile Development',
-    image: 'https://placeimg.dev/400x300?text=Mobile+Development',
+    image: '/images/capabilities/mobiledev-pixelfreight.jpg',
   },
   {
     label: 'UI/UX Design',
-    image: 'https://placeimg.dev/400x300?text=UI/UX+Design',
+    image: '/images/capabilities/uiux-pixelfreight.png',
   },
   {
     label: 'Web Hosting & Maintenance',
-    image: 'https://placeimg.dev/400x300?text=Web+Hosting+Maintenance',
+    image: '/images/capabilities/webhost-pixelfreight.jpg',
   },
 ];
 
@@ -107,12 +108,14 @@ export function ServiceList({ config = services }: ServiceListProps) {
         ))}
       </div>
       {/* Animated image that follows cursor on hover (GSAP) */}
-      <img
+      <Image
         ref={imageRef}
         src={hovered.image}
         alt={hovered.label}
-        className="w-40 md:w-56 rounded-lg shadow-lg border border-gray-800 pointer-events-none absolute top-0 left-0 z-50"
+        className="w-40 md:w-100 rounded-lg shadow-lg border border-gray-800 pointer-events-none absolute top-0 left-0 z-50"
         style={{ display: showImage ? 'block' : 'none', opacity: 0 }}
+        width={400}
+        height={600}
       />
     </section>
   );
