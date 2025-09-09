@@ -14,7 +14,7 @@ const FollowCursor = dynamic(
 
 export default function Home() {
   // Set to false to disable 3D features in all components except Hero
-  const enable3D = false;
+  const enable3D = true;
 
   return (
     <div>
