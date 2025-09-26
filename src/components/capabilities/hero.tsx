@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ScrollReveal } from '@/components/effects/scroll-reveal';
-import { SplitTextReveal } from '@/components/effects/split-text-reveal';
 
 export function CapabilitiesHero() {
   return (
@@ -10,14 +9,10 @@ export function CapabilitiesHero() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-start mb-16">
             <div className="w-full md:w-1/2">
               <span className="text-xs md:text-sm font-mono text-[#a78bfa] tracking-widest uppercase block mb-4">
-                <SplitTextReveal>
-                  High-Quality, Tech Solutions
-                </SplitTextReveal>
+                High-Quality, Tech Solutions
               </span>
               <h1 className="text-4xl md:text-6xl font-light text-white leading-tight mb-8 md:mb-0">
-                <SplitTextReveal>
-                  What We Do Best
-                </SplitTextReveal>
+                What We Do Best
               </h1>
             </div>
           </div>
@@ -28,9 +23,7 @@ export function CapabilitiesHero() {
             </div>
             <div className="w-full md:w-1/2 flex md:justify-end mt-8 md:mt-0">
               <p className="text-xs md:text-sm text-right text-white/80 max-w-md font-mono">
-                <SplitTextReveal>
-                  We combine creativity, technical expertise, and a deep understanding of user experience to deliver products that look great, work flawlessly, and stay within your budget.
-                </SplitTextReveal>
+                We combine creativity, technical expertise, and a deep understanding of user experience to deliver products that look great, work flawlessly, and stay within your budget.
               </p>
             </div>
           </div>

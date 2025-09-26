@@ -73,11 +73,11 @@ export function Navbar() {
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 justify-end">
             <div className="flex items-center gap-2">
-              <Button variant="ghost" as="link" href="/work">
-                Work
+              <Button variant="ghost" as="link" href="/web">
+                Web
               </Button>
-              <Button variant="ghost" as="link" href="/capabilities">
-                Capabilities
+              <Button variant="ghost" as="link" href="/game/tinychaos">
+                Game
               </Button>
               <Button variant="ghost" as="link" href="/about">
                 About
@@ -92,9 +92,9 @@ export function Navbar() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
@@ -110,30 +110,37 @@ export function Navbar() {
           {isMenuOpen && (
             <div className="fixed inset-0 top-20 backdrop-blur-sm z-40 md:hidden">
               <div className="flex flex-col items-center space-y-4 py-8 px-6 bg-background/95">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   className="w-full justify-start text-lg"
                   asChild
                 >
                   <Link href="/work" onClick={() => setIsMenuOpen(false)}>Work</Link>
                 </Button>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   className="w-full justify-start text-lg"
                   asChild
                 >
-                  <Link href="/capabilities" onClick={() => setIsMenuOpen(false)}>Capabilities</Link>
+                  <Link href="/web" onClick={() => setIsMenuOpen(false)}>Web</Link>
                 </Button>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-lg"
+                  asChild
+                >
+                  <Link href="/game/tinychaos" onClick={() => setIsMenuOpen(false)}>Game</Link>
+                </Button>
+                <Button
+                  variant="ghost"
                   className="w-full justify-start text-lg"
                   asChild
                 >
                   <Link href="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
                 </Button>
                 <div className="w-full border-t border-border/40 my-2"></div>
-                <Button 
-                  variant="linkblock" 
+                <Button
+                  variant="linkblock"
                   className="w-full justify-start text-lg gap-2"
                   asChild
                 >

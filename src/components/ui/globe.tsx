@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import createGlobe from 'cobe';
 import { cn } from '@/lib/utils';
+
 interface EarthProps {
   className?: string;
   theta?: number;
@@ -13,34 +14,51 @@ interface EarthProps {
   baseColor?: [number, number, number];
   markerColor?: [number, number, number];
   glowColor?: [number, number, number];
+  offset?: [number, number];
+  rotationSpeed?: number;
 }
+
 const Earth: React.FC<EarthProps> = ({
   className,
-  theta = 0.25,
-  dark = 1,
-  scale = 1.1,
-  diffuse = 1.2,
-  mapSamples = 40000,
-  mapBrightness = 6,
+  theta = 0.3,
+  dark = 0.9,
+  scale = 1.2,
+  diffuse = 1.4,
+  mapSamples = 30000,
+  mapBrightness = 7,
   baseColor = [0.4549, 0.2627, 0.9569],
-  markerColor = [1, 0, 0],
+  markerColor = [1, 0.2, 0.5],
   glowColor = [0.6314, 0.3725, 1],
+  offset = [0, 0],
+  rotationSpeed = 0.002,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState(0);
 
   useEffect(() => {
-    let width = 0;
-    const onResize = () =>
-      canvasRef.current && (width = canvasRef.current.offsetWidth);
-    window.addEventListener('resize', onResize);
-    onResize();
-    let phi = 0;
+    const updateSize = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.offsetWidth;
+        const height = containerRef.current.offsetHeight;
+        setSize(Math.min(width, height));
+      }
+    };
 
-    onResize();
-    const globe = createGlobe(canvasRef.current!, {
+    updateSize();
+    window.addEventListener('resize', updateSize);
+
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
+  useEffect(() => {
+    if (!canvasRef.current || size === 0) return;
+
+    let phi = 0;
+    const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
+      width: size * 2,
+      height: size * 2,
       phi: 0,
       theta: theta,
       dark: dark,
@@ -52,39 +70,42 @@ const Earth: React.FC<EarthProps> = ({
       markerColor: markerColor,
       glowColor: glowColor,
       opacity: 1,
-      offset: [0, 0],
-      markers: [
-        // longitude latitude
-      ],
-      onRender: (state: Record<string, any>) => {
-        // Called on every animation frame.
-        // `state` will be an empty object, return updated params.\
+      offset: offset,
+      markers: [],
+      onRender: (state) => {
         state.phi = phi;
-        phi += 0.003;
+        phi += rotationSpeed;
       },
     });
 
-    return () => {
-      globe.destroy();
-    };
-  }, []);
+    return () => globe.destroy();
+  }, [size, theta, dark, scale, diffuse, mapSamples, mapBrightness, baseColor, markerColor, glowColor, offset, rotationSpeed]);
 
   return (
     <div
+      ref={containerRef}
       className={cn(
-        'flex items-center justify-center z-[10] w-full max-w-[350px] mx-auto',
+        'relative w-full h-full flex items-center justify-center overflow-visible pointer-events-none select-none',
         className
       )}
     >
-      <canvas
-        ref={canvasRef}
+      <div
+        className="relative w-full h-full"
         style={{
-          width: '100%',
-          height: '100%',
-          maxWidth: '100%',
           aspectRatio: '1',
         }}
-      />
+      >
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{
+            width: '100%',
+            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
+          }}
+        />
+      </div>
     </div>
   );
 };

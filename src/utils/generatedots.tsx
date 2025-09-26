@@ -1,5 +1,5 @@
 // utils/generateDots.ts
-export function generateDots(count = 500) {
+export function generateDots(count = 10) {
   const points = []
   for (let i = 0; i < count; i++) {
     points.push({

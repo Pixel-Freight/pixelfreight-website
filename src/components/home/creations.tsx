@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import Link from 'next/link'
+import Image from 'next/image'
 
 interface CreationsProps {
   enable3D?: boolean;
@@ -31,24 +33,33 @@ export function Creations({ enable3D = true }: CreationsProps) {
 
       // Initialize Three.js scene
       scene = new THREE.Scene()
-      camera = new THREE.PerspectiveCamera(60, window.innerWidth / 500, 0.1, 1000)
-      camera.position.set(0, 20, 40)
+      const container = mountRef.current!
+      const { width, height } = container.getBoundingClientRect()
+      camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
+      camera.position.set(-9, 8, 13)
+      camera.lookAt(0, 0, 0) // Make camera look at the center of the scene
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-      renderer.setSize(window.innerWidth, 500)
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
+      renderer.setSize(width, height, false)
 
       // Clear any existing content
-      while (mountRef.current?.firstChild) {
-        mountRef.current.removeChild(mountRef.current.firstChild)
+      if (mountRef.current) {
+        while (mountRef.current.firstChild) {
+          mountRef.current.removeChild(mountRef.current.firstChild)
+        }
+        mountRef.current.appendChild(renderer.domElement)
       }
 
-      mountRef.current.appendChild(renderer.domElement)
-
+      // Setup OrbitControls with auto-rotation but disable user interaction
       controls = new OrbitControls(camera, renderer.domElement)
       controls.enableDamping = true
       controls.dampingFactor = 0.05
       controls.autoRotate = true
       controls.autoRotateSpeed = 0.4
+      controls.enableZoom = false
+      controls.enablePan = false
+      controls.enableRotate = false
       controls.target.set(0, 0, 0)
 
       // Create terrain
@@ -61,13 +72,16 @@ export function Creations({ enable3D = true }: CreationsProps) {
         controls.update()
         renderer.render(scene, camera)
       }
+
       animate()
 
       // Handle window resize
       const handleResize = () => {
-        camera.aspect = window.innerWidth / 500
+        if (!mountRef.current) return
+        const { width, height } = mountRef.current.getBoundingClientRect()
+        camera.aspect = width / height
         camera.updateProjectionMatrix()
-        renderer.setSize(window.innerWidth, 500)
+        renderer.setSize(width, height, false)
       }
       window.addEventListener('resize', handleResize)
 
@@ -77,6 +91,9 @@ export function Creations({ enable3D = true }: CreationsProps) {
         cancelAnimationFrame(animationFrameId)
         if (renderer) {
           renderer.dispose()
+        }
+        if (controls && typeof controls.dispose === 'function') {
+          controls.dispose()
         }
         if (mountRef.current && mountRef.current.contains(renderer.domElement)) {
           mountRef.current.removeChild(renderer.domElement)
@@ -147,6 +164,48 @@ export function Creations({ enable3D = true }: CreationsProps) {
             <p className="text-gray-400 text-center p-4">3D Terrain Disabled</p>
           </div>
         )}
+        {/* Overlay CTA buttons (images) */}
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+          <div className="pointer-events-auto flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4">
+            <Link href="/web" className="group relative block">
+              <div className="relative w-56 h-28 sm:w-64 sm:h-32 rounded-xl overflow-hidden ring-1 ring-white/10 hover:ring-white/30 transition-all">
+                {/* Replace src with your actual image, e.g., /images/web-studio.png */}
+                <Image
+                  src="/images/web-studio.png"
+                  alt="Web Studio"
+                  fill
+                  sizes="(max-width: 640px) 14rem, 16rem"
+                  className="object-cover"
+                  priority
+                  onError={() => { /* silent */ }}
+                />
+                {/* Fallback overlay if image missing */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600/40 to-black/60 backdrop-blur-[1px] flex items-center justify-center">
+                  <span className="text-white font-semibold tracking-wide">Web Studio</span>
+                </div>
+              </div>
+            </Link>
+
+            <Link href="/game/tinychaos" className="group relative block">
+              <div className="relative w-56 h-28 sm:w-64 sm:h-32 rounded-xl overflow-hidden ring-1 ring-white/10 hover:ring-white/30 transition-all">
+                {/* Replace src with your actual image, e.g., /images/game-studio.png */}
+                <Image
+                  src="/images/game-studio.png"
+                  alt="Game Studio"
+                  fill
+                  sizes="(max-width: 640px) 14rem, 16rem"
+                  className="object-cover"
+                  priority
+                  onError={() => { /* silent */ }}
+                />
+                {/* Fallback overlay if image missing */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/40 to-black/60 backdrop-blur-[1px] flex items-center justify-center">
+                  <span className="text-white font-semibold tracking-wide">Game Studio</span>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   )

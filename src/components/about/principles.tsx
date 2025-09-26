@@ -2,7 +2,6 @@ import React from 'react';
 import { Users, DollarSign, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { ScrollReveal } from '@/components/effects/scroll-reveal';
-import { SplitTextReveal } from '@/components/effects/split-text-reveal';
 
 const principles = [
   {
@@ -38,10 +37,10 @@ export function Principles() {
                     {principle.icon}
                   </div>
                   <CardTitle>
-                    <SplitTextReveal>{principle.title}</SplitTextReveal>
+                    {principle.title}
                   </CardTitle>
                   <CardDescription>
-                    <SplitTextReveal>{principle.description}</SplitTextReveal>
+                    {principle.description}
                   </CardDescription>
                 </CardContent>
               </Card>

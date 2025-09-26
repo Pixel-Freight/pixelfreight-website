@@ -1,7 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
 import { ScrollReveal } from '@/components/effects/scroll-reveal';
-import { SplitTextReveal } from '@/components/effects/split-text-reveal'
+import { Button } from '../ui/button';
 
 export function CTA() {
   return (
@@ -10,23 +9,14 @@ export function CTA() {
         <div className="container mx-auto px-4">
           <div className="bg-background p-8 md:p-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              <SplitTextReveal>
-                Our story is about building the future.
-              </SplitTextReveal>
+              Our story is about building the future.
             </h2>
             <p className="text-xl text-foreground/80 mb-8 max-w-2xl mx-auto">
-              <SplitTextReveal>
-                You have the vision. We have the team to help you build it. Let&apos;s write the next chapter together.
-              </SplitTextReveal>
+              You have the vision. We have the team to help you build it. Let&apos;s write the next chapter together.
             </p>
-            <Link
-              href="/contact"
-              className="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-200"
-            >
-              <SplitTextReveal>
-                Let&apos;s Build Something Great
-              </SplitTextReveal>
-            </Link>
+            <Button variant="linkblock" size="lg" className="gap-2 group" as="link" href="/connect">
+              Let&apos;s Build Something Great
+            </Button>
           </div>
         </div>
       </section>
