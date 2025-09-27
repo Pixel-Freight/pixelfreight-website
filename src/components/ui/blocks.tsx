@@ -6,7 +6,7 @@ interface BlocksProps {
     activeDivsClass: string;
     divClass: string;
     classname?: string;
-    containerRef: React.RefObject<HTMLElement>;
+    containerRef: React.RefObject<HTMLElement | null>;
     activeDivs: Record<number, Set<number>>;
 }
 

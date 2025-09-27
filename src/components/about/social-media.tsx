@@ -30,7 +30,7 @@ export function SocialMedia() {
     const positions: Record<number, Set<number>> = {};
 
     // Place each social media item in a random position
-    socialMedia.forEach((_, index) => {
+    socialMedia.forEach(() => {
       const row = Math.floor(Math.random() * 4); // 0-3 rows
       const col = Math.floor(Math.random() * 8); // 0-7 columns
 
