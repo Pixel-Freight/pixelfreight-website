@@ -1,14 +1,15 @@
 // src/app/page.tsx
-'use client';
+"use client";
 
-import { Hero } from '@/components/home/hero';
-import { AboutUs } from '@/components/home/about';
-import { Creations } from '@/components/home/creations';
-import dynamic from 'next/dynamic';
+import { Hero } from "@/components/home/hero";
+import { AboutUs } from "@/components/home/about";
+import { Creations } from "@/components/home/creations";
+import { TrustStrip, ServiceHome } from "@/components/home";
+import dynamic from "next/dynamic";
 
 // Dynamically import the components with no SSR
 const FollowCursor = dynamic(
-  () => import('@/components/effects/follow-cursor'),
+  () => import("@/components/effects/follow-cursor"),
   { ssr: false }
 );
 
@@ -18,9 +19,10 @@ export default function Home() {
 
   return (
     <div>
-
       <Hero />
+      <TrustStrip />
       <AboutUs enable3D={enable3D} />
+      <ServiceHome />
       <Creations enable3D={enable3D} />
       {/* We'll add more sections here later */}
 

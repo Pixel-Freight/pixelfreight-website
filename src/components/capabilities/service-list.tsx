@@ -1,6 +1,6 @@
-import gsap from 'gsap';
-import * as React from 'react';
-import Image from 'next/image'
+import gsap from "gsap";
+import * as React from "react";
+import Image from "next/image";
 
 interface Service {
   label: string;
@@ -13,20 +13,20 @@ interface ServiceListProps {
 
 const services: Service[] = [
   {
-    label: 'Web Development',
-    image: '/images/capabilities/webdev-pixelfreight.png',
+    label: "Web Development",
+    image: "/images/capabilities/webdev-pixelfreight.png",
   },
   {
-    label: 'Mobile Development',
-    image: '/images/capabilities/mobiledev-pixelfreight.jpg',
+    label: "Mobile Development",
+    image: "/images/capabilities/mobiledev-pixelfreight.jpg",
   },
   {
-    label: 'UI/UX Design',
-    image: '/images/capabilities/uiux-pixelfreight.png',
+    label: "UI/UX Design",
+    image: "/images/capabilities/uiux-pixelfreight.png",
   },
   {
-    label: 'Web Hosting & Maintenance',
-    image: '/images/capabilities/webhost-pixelfreight.jpg',
+    label: "Web Hosting & Maintenance",
+    image: "/images/capabilities/webhost-pixelfreight.jpg",
   },
 ];
 
@@ -35,7 +35,7 @@ export function ServiceList({ config = services }: ServiceListProps) {
     idx: number | null;
     image: string;
     label: string;
-  }>({ idx: null, image: '', label: '' });
+  }>({ idx: null, image: "", label: "" });
   const containerRef = React.useRef<HTMLDivElement>(null);
   const imageRef = React.useRef<HTMLImageElement>(null);
   const [showImage, setShowImage] = React.useState(false);
@@ -48,8 +48,8 @@ export function ServiceList({ config = services }: ServiceListProps) {
         y,
         opacity,
         duration: 0.3,
-        ease: 'power2.out',
-        overwrite: 'auto',
+        ease: "power2.out",
+        overwrite: "auto",
       });
     }
   };
@@ -59,7 +59,11 @@ export function ServiceList({ config = services }: ServiceListProps) {
     const rect = containerRef.current.getBoundingClientRect();
     const relX = e.clientX - rect.left;
     const relY = e.clientY - rect.top;
-    animateImage(relX - imageRef.current.offsetWidth / 2, relY - imageRef.current.offsetHeight / 2, 1);
+    animateImage(
+      relX - imageRef.current.offsetWidth / 2,
+      relY - imageRef.current.offsetHeight / 2,
+      1
+    );
   };
 
   const handleEnter = (idx: number, service: Service) => {
@@ -76,7 +80,7 @@ export function ServiceList({ config = services }: ServiceListProps) {
     if (imageRef.current) {
       gsap.to(imageRef.current, { opacity: 0, duration: 0.2 });
     }
-    setHovered({ idx: null, image: '', label: '' });
+    setHovered({ idx: null, image: "", label: "" });
   };
 
   return (
@@ -98,8 +102,9 @@ export function ServiceList({ config = services }: ServiceListProps) {
           >
             <div className="w-full flex justify-center">
               <span
-                className={`py-6 md:py-10 font-mono text-xs md:text-base tracking-widest transition-colors duration-200 ${hovered.idx === idx ? 'text-[#a78bfa]' : 'text-gray-200'
-                  }`}
+                className={`py-6 md:py-10 font-mono text-xs md:text-base tracking-widest transition-colors duration-200 ${
+                  hovered.idx === idx ? "text-[#a78bfa]" : "text-gray-200"
+                }`}
               >
                 {service.label}
               </span>
@@ -113,7 +118,7 @@ export function ServiceList({ config = services }: ServiceListProps) {
         src={hovered.image}
         alt={hovered.label}
         className="w-40 md:w-100 rounded-lg shadow-lg border border-gray-800 pointer-events-none absolute top-0 left-0 z-50"
-        style={{ display: showImage ? 'block' : 'none', opacity: 0 }}
+        style={{ display: showImage ? "block" : "none", opacity: 0 }}
         width={400}
         height={600}
       />

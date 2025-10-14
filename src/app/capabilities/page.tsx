@@ -1,12 +1,21 @@
-'use client'
+"use client";
 
-import { CapabilitiesHero, ServiceList } from '@/components/capabilities';
+import {
+  CapabilitiesHero,
+  CapabilitiesGrid,
+  ProcessScrollReveal,
+  TechStackMarquee,
+  CapabilitiesCTA,
+} from "@/components/capabilities";
 
 export default function CapabilitiesPage() {
   return (
-    <div className="flex flex-col">
+    <div>
       <CapabilitiesHero />
-      <ServiceList />
+      <CapabilitiesGrid />
+      <ProcessScrollReveal />
+      <TechStackMarquee />
+      <CapabilitiesCTA />
     </div>
   );
 }

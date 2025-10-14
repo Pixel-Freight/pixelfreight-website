@@ -1,7 +1,7 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import createGlobe from 'cobe';
-import { cn } from '@/lib/utils';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import createGlobe from "cobe";
+import { cn } from "@/lib/utils";
 
 interface EarthProps {
   className?: string;
@@ -46,9 +46,9 @@ const Earth: React.FC<EarthProps> = ({
     };
 
     updateSize();
-    window.addEventListener('resize', updateSize);
+    window.addEventListener("resize", updateSize);
 
-    return () => window.removeEventListener('resize', updateSize);
+    return () => window.removeEventListener("resize", updateSize);
   }, []);
 
   useEffect(() => {
@@ -79,30 +79,43 @@ const Earth: React.FC<EarthProps> = ({
     });
 
     return () => globe.destroy();
-  }, [size, theta, dark, scale, diffuse, mapSamples, mapBrightness, baseColor, markerColor, glowColor, offset, rotationSpeed]);
+  }, [
+    size,
+    theta,
+    dark,
+    scale,
+    diffuse,
+    mapSamples,
+    mapBrightness,
+    baseColor,
+    markerColor,
+    glowColor,
+    offset,
+    rotationSpeed,
+  ]);
 
   return (
     <div
       ref={containerRef}
       className={cn(
-        'relative w-full h-full flex items-center justify-center overflow-visible pointer-events-none select-none',
+        "relative w-full h-full flex items-center justify-center overflow-visible pointer-events-none select-none",
         className
       )}
     >
       <div
         className="relative w-full h-full"
         style={{
-          aspectRatio: '1',
+          aspectRatio: "1",
         }}
       >
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
           style={{
-            width: '100%',
-            height: '100%',
-            maxWidth: '100%',
-            maxHeight: '100%',
+            width: "100%",
+            height: "100%",
+            maxWidth: "100%",
+            maxHeight: "100%",
           }}
         />
       </div>
