@@ -1,13 +1,19 @@
-import { AboutHero, CTA, Principles, Statistics, SocialMedia } from '@/components/about';
+import {
+  AboutHero,
+  AboutCTA,
+  AboutPhilosophy,
+  AboutStats,
+  AboutConnect,
+} from "@/components/about";
 
 export default function AboutPage() {
-    return (
-        <div>
-            <AboutHero />
-            <Principles />
-            <Statistics />
-            <SocialMedia />
-            <CTA />
-        </div>
-    );
+  return (
+    <div>
+      <AboutHero />
+      <AboutPhilosophy />
+      <AboutStats />
+      <AboutConnect />
+      <AboutCTA />
+    </div>
+  );
 }
