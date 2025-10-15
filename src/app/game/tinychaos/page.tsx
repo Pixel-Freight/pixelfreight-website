@@ -8,6 +8,7 @@ import {
 import { ScrollReveal } from "@/components/effects/scroll-reveal";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Tiny Chaos — Bullet Heaven Roguelike",
@@ -41,7 +42,7 @@ export default function TinyChaosPage() {
             {/* Cover art */}
             <div className="mt-12 mx-auto relative aspect-[16/9] w-full max-w-4xl overflow-hidden border border-white/10 bg-black/50 backdrop-blur-sm">
               <Image
-                src="/images/tinychaos-keyart.png"
+                src="/tinychaos.png"
                 alt="Tiny Chaos Key Art"
                 fill
                 className="object-cover opacity-90"
@@ -66,15 +67,12 @@ export default function TinyChaosPage() {
             <div className="relative mx-auto aspect-video w-full overflow-hidden border border-white/10 bg-black">
               <iframe
                 className="absolute inset-0 h-full w-full"
-                src="https://www.youtube.com/embed/VIDEO_ID?rel=0"
+                src="https://www.youtube.com/embed/flhmb5WvhPY?si=XG3crDVM6ACkIvE0"
                 title="Tiny Chaos Gameplay"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
             </div>
-            <p className="mt-3 text-center text-xs text-white/40">
-              Replace VIDEO_ID with your actual YouTube video ID.
-            </p>
           </div>
         </section>
       </ScrollReveal>
@@ -184,14 +182,16 @@ export default function TinyChaosPage() {
               Wishlist Tiny Chaos on Steam and follow the journey as we expand
               the chaos every update.
             </p>
-            <Link
-              href="https://store.steampowered.com/app/YOUR_APP_ID"
-              target="_blank"
-              className="inline-flex items-center justify-center gap-2 bg-[#7443f4] hover:bg-[#8658ff] transition-colors px-8 py-4 text-lg font-medium text-white"
+            <Button
+              variant="linkblock"
+              size="lg"
+              className="gap-2 group"
+              as="link"
+              href="https://store.steampowered.com/app/2500680/Tiny_Chaos/?utm_source=freightpx&utm_medium=website&utm_campaign=game"
             >
               View on Steam
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
           </div>
         </section>
       </ScrollReveal>

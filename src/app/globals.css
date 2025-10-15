@@ -27,6 +27,7 @@
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -51,12 +52,14 @@ body {
   font-feature-settings: "ss04" on, "ss03" on, "ss01" on, "ss02" on, "calt" off;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-top: 80px; /* Account for both promo bar and navbar */
+  padding-top: 80px;
+  /* Account for both promo bar and navbar */
 }
 
 /* When promo is hidden */
 body:has(.fixed.top-0 + header.top-0) {
-  padding-top: 80px; /* Only navbar height */
+  padding-top: 80px;
+  /* Only navbar height */
 }
 
 /* For code blocks and monospace text */
@@ -77,4 +80,22 @@ pre,
 /* Gradient background utility */
 .gradient-bg {
   background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
 }

@@ -2,6 +2,7 @@
 import { ScrollReveal } from "@/components/effects/scroll-reveal";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export function AboutCTA() {
   return (
@@ -16,13 +17,16 @@ export function AboutCTA() {
             your vision to life.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-            <Link
+            <Button
+              variant="linkblock"
+              size="lg"
+              className="gap-2 group"
+              as="link"
               href="/connect"
-              className="inline-flex items-center justify-center gap-2 bg-[#7443f4] hover:bg-[#8658ff] transition-colors px-8 py-4 text-lg font-medium text-white"
             >
               Start a Project
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
           </div>
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(116,67,244,0.15)_0%,transparent_70%)] pointer-events-none" />

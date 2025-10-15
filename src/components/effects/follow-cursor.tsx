@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 interface Position {
   x: number;
@@ -44,7 +44,7 @@ class Square {
     let isNearAnyButton = false;
 
     if (buttons && buttons.length > 0) {
-      buttons.forEach(button => {
+      buttons.forEach((button) => {
         const rect = button.getBoundingClientRect();
         const buttonCenter = {
           x: rect.left + rect.width / 2,
@@ -65,14 +65,13 @@ class Square {
           const strength = 0.1;
           this.position.x += (buttonCenter.x - this.position.x) * strength;
           this.position.y += (buttonCenter.y - this.position.y) * strength;
-
         }
       });
     }
 
     this.isNearButton = isNearAnyButton;
 
-    this.currentColor = this.color
+    this.currentColor = this.color;
     this.rotation += this.rotationSpeed;
     this.opacity = this.isNearButton ? 1 : 1;
   }
@@ -87,9 +86,9 @@ class Square {
     if (!this.isNearButton) {
       // Default state: transparent fill, white border
       context.globalAlpha = this.opacity;
-      context.strokeStyle = '#ffffff';
+      context.strokeStyle = "#ffffff";
       context.lineWidth = 1;
-      context.fillStyle = 'transparent';
+      context.fillStyle = "transparent";
       context.beginPath();
       context.rect(-halfSize, -halfSize, this.size, this.size);
       context.fill();
@@ -97,11 +96,16 @@ class Square {
     } else {
       // Near button: become bigger
       context.globalAlpha = this.opacity;
-      context.strokeStyle = '#ffffff';
+      context.strokeStyle = "#ffffff";
       context.lineWidth = 2;
-      context.fillStyle = 'transparent';
+      context.fillStyle = "transparent";
       context.beginPath();
-      context.rect(-halfSize * 1.5, -halfSize * 1.5, this.size * 1.5, this.size * 1.5);
+      context.rect(
+        -halfSize * 1.5,
+        -halfSize * 1.5,
+        this.size * 1.5,
+        this.size * 1.5
+      );
       context.fill();
       context.stroke();
     }
@@ -132,21 +136,28 @@ interface FollowCursorProps {
 }
 
 const FollowCursor: React.FC<FollowCursorProps> = ({
-  color = 'var(--primary)',
+  color = "var(--primary)",
   size = 10,
 }) => {
   const requestRef = useRef<number>(0);
   const squareRef = useRef<Square | null>(null);
   const cursorRef = useRef<Position>({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // true for tablet & mobile
+    };
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+
     const getComputedColor = (colorVar: string): string => {
-      if (typeof window === 'undefined') return '#7443f4';
+      if (typeof window === "undefined") return "#7443f4";
       const style = getComputedStyle(document.documentElement);
-      if (colorVar.startsWith('var(')) {
-        const varName = colorVar.replace('var(', '').replace(')', '').trim();
-        return style.getPropertyValue(varName).trim() || '#7443f4';
+      if (colorVar.startsWith("var(")) {
+        const varName = colorVar.replace("var(", "").replace(")", "").trim();
+        return style.getPropertyValue(varName).trim() || "#7443f4";
       }
       return colorVar;
     };
@@ -160,7 +171,7 @@ const FollowCursor: React.FC<FollowCursorProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const resizeCanvas = () => {
@@ -193,25 +204,28 @@ const FollowCursor: React.FC<FollowCursorProps> = ({
       requestRef.current = requestAnimationFrame(animate);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("resize", resizeCanvas);
     requestRef.current = requestAnimationFrame(animate);
 
     return () => {
       if (requestRef.current) {
         cancelAnimationFrame(requestRef.current);
       }
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", resizeCanvas);
     };
   }, [color, size]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-50"
-    />
-  );
+  if (isMobile) {
+    return null;
+  } else {
+    return (
+      <canvas
+        ref={canvasRef}
+        className="fixed top-0 left-0 w-full h-full pointer-events-none z-50"
+      />
+    );
+  }
 };
 
 export default FollowCursor;

@@ -2,172 +2,112 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import Link from "next/link";
-import Image from "next/image";
 
-interface CreationsProps {
-  enable3D?: boolean;
-}
-
-export function Creations({ enable3D = true }: CreationsProps) {
+export function Creations({ enable3D = true }: { enable3D?: boolean }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  useEffect(() => setIsClient(true), []);
 
   useEffect(() => {
     if (!enable3D || !isClient || !mountRef.current) return;
 
-    // Dynamically import Three.js only when needed
     let scene: THREE.Scene;
     let camera: THREE.PerspectiveCamera;
     let renderer: THREE.WebGLRenderer;
-    let controls: any;
-    let animationFrameId: number;
+    let mesh: THREE.InstancedMesh;
+    let animationId: number;
+    const clock = new THREE.Clock();
 
     const init3D = async () => {
-      const THREE = await import("three");
-      const { OrbitControls } = await import(
-        "three/examples/jsm/controls/OrbitControls.js"
-      );
-
-      // Initialize Three.js scene
       scene = new THREE.Scene();
       const container = mountRef.current!;
       const { width, height } = container.getBoundingClientRect();
+
       camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
       camera.position.set(-9, 8, 13);
-      camera.lookAt(0, 0, 0); // Make camera look at the center of the scene
+      camera.lookAt(0, 0, 0);
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.setSize(width, height, false);
+      container.innerHTML = "";
+      container.appendChild(renderer.domElement);
 
-      // Clear any existing content
-      if (mountRef.current) {
-        while (mountRef.current.firstChild) {
-          mountRef.current.removeChild(mountRef.current.firstChild);
-        }
-        mountRef.current.appendChild(renderer.domElement);
-      }
+      mesh = createInstancedTerrain(THREE, width);
+      scene.add(mesh);
 
-      // Setup OrbitControls with auto-rotation but disable user interaction
-      controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.05;
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.4;
-      controls.enableZoom = false;
-      controls.enablePan = false;
-      controls.enableRotate = false;
-      controls.target.set(0, 0, 0);
-
-      // Create terrain
-      const group = createTerrain(THREE);
-      scene.add(group);
-
-      // Animation loop
       const animate = () => {
-        animationFrameId = requestAnimationFrame(animate);
-        controls.update();
+        animationId = requestAnimationFrame(animate);
+        const t = clock.getElapsedTime(); // ⏱ delta-based
+        mesh.rotation.y = t * 0.1; // radians per second
         renderer.render(scene, camera);
       };
-
       animate();
 
-      // Handle window resize
       const handleResize = () => {
-        if (!mountRef.current) return;
-        const { width, height } = mountRef.current.getBoundingClientRect();
+        const { width, height } = container.getBoundingClientRect();
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height, false);
       };
       window.addEventListener("resize", handleResize);
 
-      // Cleanup function
+      const handleVisibility = () => {
+        if (document.hidden) cancelAnimationFrame(animationId);
+        else animate();
+      };
+      document.addEventListener("visibilitychange", handleVisibility);
+
       return () => {
         window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animationFrameId);
-        if (renderer) {
-          renderer.dispose();
-        }
-        if (controls && typeof controls.dispose === "function") {
-          controls.dispose();
-        }
-        if (
-          mountRef.current &&
-          mountRef.current.contains(renderer.domElement)
-        ) {
+        document.removeEventListener("visibilitychange", handleVisibility);
+        cancelAnimationFrame(animationId);
+        renderer.dispose();
+        if (mountRef.current?.contains(renderer.domElement))
           mountRef.current.removeChild(renderer.domElement);
-        }
       };
     };
 
     init3D().catch(console.error);
-
-    // Cleanup function for the effect
-    return () => {
-      cancelAnimationFrame(animationFrameId!);
-    };
   }, [enable3D, isClient]);
 
-  // Function to create terrain (moved outside for better organization)
-  const createTerrain = (THREE: any) => {
-    const group = new THREE.Group();
-    const rows = 50;
-    const cols = 50;
+  function createInstancedTerrain(THREE: any, width: number) {
+    const count = width < 600 ? 500 : width < 900 ? 1000 : 2000;
+    const geometry = new THREE.BoxGeometry(0.12, 0.12, 0.12);
+    const material = new THREE.MeshBasicMaterial({ color: "#7443f4" });
+    const mesh = new THREE.InstancedMesh(geometry, material, count);
+    const dummy = new THREE.Object3D();
+    const grid = Math.sqrt(count);
     const spacing = 1.5;
 
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        const x = (col - cols / 2) * spacing;
-        const z = (row - rows / 2) * spacing;
-
-        // Multi-octave fake noise
-        let y = 0;
-        let amplitude = 5;
-        let frequency = 0.1;
-        for (let o = 0; o < 4; o++) {
-          const nx = x * frequency + o * 10;
-          const nz = z * frequency + o * 10;
-          y += (Math.sin(nx) * Math.cos(nz * 1.3) + 1) * 0.5 * amplitude;
-          amplitude *= 0.4;
-          frequency *= 2;
-        }
-        y += (Math.random() - 0.5) * 0.5; // random offset
-
-        const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-        const material = new THREE.MeshBasicMaterial({ color: "#7443f4" });
-        const dot = new THREE.Mesh(geometry, material);
-
-        dot.position.set(x, y, z);
-        group.add(dot);
+    let i = 0;
+    for (let x = 0; x < grid; x++) {
+      for (let z = 0; z < grid; z++) {
+        if (i >= count) break;
+        const px = (x - grid / 2) * spacing;
+        const pz = (z - grid / 2) * spacing;
+        const py =
+          Math.sin(px * 0.15) * Math.cos(pz * 0.2) * 3 +
+          (Math.random() - 0.5) * 0.2;
+        dummy.position.set(px, py, pz);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i++, dummy.matrix);
       }
     }
-    return group;
-  };
+    return mesh;
+  }
 
   return (
-    <section className="w-full min-h-screen bg-black text-white px-6 md:px-12 lg:px-18 py-20 flex flex-col gap-12">
-      {/* Text Section */}
-      <div className="w-full text-right space-y-6"></div>
-
-      {/* 3D Terrain Section */}
-      <div className="w-full h-[300px] md:h-[500px] relative">
+    <section className="w-full bg-black text-white overflow-hidden">
+      <div className="relative w-full h-[280px] sm:h-[400px] md:h-[520px] lg:h-[600px]">
         {enable3D ? (
           <div ref={mountRef} className="w-full h-full" />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-purple-900/50 to-black/50 rounded-lg flex items-center justify-center">
-            <p className="text-gray-400 text-center p-4">3D Terrain Disabled</p>
+          <div className="w-full h-full flex items-center justify-center text-gray-400">
+            3D Terrain Disabled
           </div>
         )}
-        {/* Overlay CTA buttons (images) */}
-        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <div className="pointer-events-auto flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4"></div>
-        </div>
       </div>
     </section>
   );

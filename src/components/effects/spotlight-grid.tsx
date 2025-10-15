@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { motion } from "framer-motion";
 
 const GRID_SIZE = 60; // Size of each grid square
 const GRID_SPACING = 1; // Space between squares
@@ -17,12 +18,16 @@ interface GridCell {
 
 export default function SpotlightGrid() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [delayedMousePosition, setDelayedMousePosition] = useState({ x: 0, y: 0 });
+  const [delayedMousePosition, setDelayedMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [gridCells, setGridCells] = useState<GridCell[]>([]);
   const animationRef = useRef<number | undefined>(undefined);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Handle component mount
   useEffect(() => {
@@ -35,14 +40,29 @@ export default function SpotlightGrid() {
     };
   }, []);
 
+  useEffect(() => {
+    setMounted(true);
+    // 👇 Add this
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // true for tablet & mobile
+    };
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, []);
+
   // Handle window resize and initial dimensions
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     // Set initial mouse position to center of screen
     const initialPos = {
       x: window.innerWidth / 2,
-      y: window.innerHeight / 2
+      y: window.innerHeight / 2,
     };
     setMousePosition(initialPos);
     setDelayedMousePosition(initialPos);
@@ -50,7 +70,7 @@ export default function SpotlightGrid() {
     const updateDimensions = () => {
       setDimensions({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
     };
 
@@ -58,21 +78,21 @@ export default function SpotlightGrid() {
     updateDimensions();
 
     // Add resize listener
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
   // Handle mouse movement
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener("mousemove", updateMousePosition);
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener("mousemove", updateMousePosition);
     };
   }, []);
 
@@ -81,9 +101,9 @@ export default function SpotlightGrid() {
     if (!mounted) return;
 
     const animateFollow = () => {
-      setDelayedMousePosition(prev => ({
+      setDelayedMousePosition((prev) => ({
         x: prev.x + (mousePosition.x - prev.x) * FOLLOW_SPEED,
-        y: prev.y + (mousePosition.y - prev.y) * FOLLOW_SPEED
+        y: prev.y + (mousePosition.y - prev.y) * FOLLOW_SPEED,
       }));
 
       animationRef.current = requestAnimationFrame(animateFollow);
@@ -137,8 +157,8 @@ export default function SpotlightGrid() {
 
   // Memoize the spotlight gradients to reduce re-renders
   const spotlightStyles = useMemo(() => {
-    const primaryColor = '#7443f4';
-    const secondaryColor = '#4056ff';
+    const primaryColor = "#7443f4";
+    const secondaryColor = "#4056ff";
 
     return {
       primary: {
@@ -149,16 +169,16 @@ export default function SpotlightGrid() {
           transparent 100%
         )`,
         opacity: 0.7,
-        filter: 'blur(80px)',
-        position: 'absolute' as const,
+        filter: "blur(80px)",
+        position: "absolute" as const,
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none' as const,
-        transition: 'opacity 0.3s ease, transform 0.3s ease',
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none" as const,
+        transition: "opacity 0.3s ease, transform 0.3s ease",
         zIndex: 1,
-        transform: 'scale(1)'
+        transform: "scale(1)",
       },
       secondary: {
         background: `radial-gradient(
@@ -167,16 +187,16 @@ export default function SpotlightGrid() {
           transparent 10%
         )`,
         opacity: 0.5,
-        filter: 'blur(40px)',
-        position: 'absolute' as const,
+        filter: "blur(40px)",
+        position: "absolute" as const,
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none' as const,
-        mixBlendMode: 'screen' as const,
-        zIndex: 2
-      }
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none" as const,
+        mixBlendMode: "screen" as const,
+        zIndex: 2,
+      },
     };
   }, [delayedMousePosition.x, delayedMousePosition.y]);
 
@@ -194,32 +214,54 @@ export default function SpotlightGrid() {
     return <div className="w-screen h-screen bg-[var(--primary)]" />;
   }
 
-  return (
-    <div
-      ref={containerRef}
-      className="relative w-screen h-screen bg-[#1e1e1e] overflow-hidden"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Primary Spotlight */}
-      <div style={spotlightStyles.primary} />
-
-      {/* Secondary Spotlight */}
-      <div style={spotlightStyles.secondary} />
-
-      {/* Grid Overlay */}
+  if (!isMobile) {
+    return (
       <div
-        className="absolute inset-0 z-10"
-        style={{
-          perspective: `${PERSPECTIVE}px`,
-          transformStyle: 'preserve-3d'
-        }}
+        ref={containerRef}
+        className="relative w-screen h-screen bg-[#1e1e1e] overflow-hidden"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        {gridCells.map(cell => {
-          const elevation = calculateLift(cell.x, cell.y);
+        {/* Primary Spotlight */}
+        <div style={spotlightStyles.primary} />
 
-          // Skip rendering cells with no elevation effect for performance
-          if (elevation === 0) {
+        {/* Secondary Spotlight */}
+        <div style={spotlightStyles.secondary} />
+
+        {/* Grid Overlay */}
+        <div
+          className="absolute inset-0 z-10"
+          style={{
+            perspective: `${PERSPECTIVE}px`,
+            transformStyle: "preserve-3d",
+          }}
+        >
+          {gridCells.map((cell) => {
+            const elevation = calculateLift(cell.x, cell.y);
+
+            // Skip rendering cells with no elevation effect for performance
+            if (elevation === 0) {
+              return (
+                <div
+                  key={cell.id}
+                  className="absolute grid-square"
+                  style={{
+                    width: GRID_SIZE - GRID_SPACING,
+                    height: GRID_SIZE - GRID_SPACING,
+                    left: cell.x,
+                    top: cell.y,
+                    backgroundColor: "var(--background)",
+                  }}
+                />
+              );
+            }
+
+            // Calculate a subtle rotation based on position relative to cursor
+            const rotX =
+              (cell.y + GRID_SIZE / 2 - delayedMousePosition.y) * 0.02;
+            const rotY =
+              (delayedMousePosition.x - (cell.x + GRID_SIZE / 2)) * 0.02;
+
             return (
               <div
                 key={cell.id}
@@ -229,41 +271,67 @@ export default function SpotlightGrid() {
                   height: GRID_SIZE - GRID_SPACING,
                   left: cell.x,
                   top: cell.y,
-                  backgroundColor: 'var(--background)',
+                  backgroundColor:
+                    elevation > ELEVATION_FACTOR / 2
+                      ? "var(--primary)"
+                      : elevation > ELEVATION_FACTOR / 3
+                      ? "var(--accent)"
+                      : "var(--background)",
+                  transition:
+                    "transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.8s ease",
+                  transform: `translateZ(${elevation}px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${
+                    1 + elevation / 70
+                  })`,
+                  opacity: 1 - elevation / 20,
+                  boxShadow: `0 ${elevation * 2}px ${
+                    elevation * 3
+                  }px rgba(0, 0, 0, 1)`,
+                  zIndex: Math.floor(elevation),
+                  transformStyle: "preserve-3d",
                 }}
               />
             );
-          }
+          })}
+        </div>
+      </div>
+    );
+  } else {
+    const gridCount = 10; // 10x10 grid
+    const cells = Array.from({ length: gridCount * gridCount });
 
-          // Calculate a subtle rotation based on position relative to cursor
-          const rotX = ((cell.y + GRID_SIZE / 2) - delayedMousePosition.y) * 0.02;
-          const rotY = (delayedMousePosition.x - (cell.x + GRID_SIZE / 2)) * 0.02;
-
-          return (
-            <div
-              key={cell.id}
-              className="absolute grid-square"
-              style={{
-                width: GRID_SIZE - GRID_SPACING,
-                height: GRID_SIZE - GRID_SPACING,
-                left: cell.x,
-                top: cell.y,
-                backgroundColor: elevation > ELEVATION_FACTOR / 2
-                  ? 'var(--primary)'
-                  : elevation > ELEVATION_FACTOR / 3
-                    ? 'var(--accent)'
-                    : 'var(--background)',
-                transition: 'transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.8s ease',
-                transform: `translateZ(${elevation}px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${1 + elevation / 70})`,
-                opacity: 1 - elevation / 20,
-                boxShadow: `0 ${elevation * 2}px ${elevation * 3}px rgba(0, 0, 0, 1)`,
-                zIndex: Math.floor(elevation),
-                transformStyle: 'preserve-3d',
+    return (
+      <div className="relative w-screen h-screen bg-[#1e1e1e] overflow-hidden flex items-center justify-center">
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: `repeat(${gridCount}, 1fr)`,
+            gridTemplateRows: `repeat(${gridCount}, 1fr)`,
+            width: "100%",
+            height: "100%",
+            opacity: 0.6,
+          }}
+        >
+          {cells.map((_, i) => (
+            <motion.div
+              key={i}
+              className="bg-[rgba(116,67,244,0.15)]"
+              animate={{
+                opacity: [0.1, 0.4, 0.1],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                duration: 4,
+                delay: (i % gridCount) * 0.1 + Math.random(),
+                repeat: Infinity,
+                ease: "easeInOut",
               }}
             />
-          );
-        })}
+          ))}
+        </div>
+
+        {/* subtle overlay gradient for depth */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(64,86,255,0.15),_transparent_70%)]" />
       </div>
-    </div>
-  );
+    );
+  }
 }

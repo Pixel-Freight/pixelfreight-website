@@ -1,24 +1,31 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@/components/ui/custom-icon";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black text-[var(--foreground)] pb-12 pt-24 px-6 md:px-12 lg:px-18">
+    <footer className="bg-black text-[var(--foreground)] pb-12 pt-12 md:pt-24 px-6 md:px-12 lg:px-18">
       <div className="mx-auto px-4">
         {/* Top Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-          {/* Left - Logo */}
-          <div className="mb-6 md:mb-0">
-            <span className="text-2xl font-bold">PixelFreight</span>
-          </div>
+        <div className="flex flex-col justify-between md:justify-end items-center md:items-end mb-8 gap-8">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 text-xl font-bold">
+            <Image
+              src="/logo-precise.svg" // 👈 replace with your actual logo file (e.g. /logo.png)
+              alt="PixelFreight Logo"
+              width={28}
+              height={28}
+              className="w-6 h-6 md:w-8 md:h-8 object-contain"
+            />
+          </Link>
 
           {/* Right - Social & Email */}
           <div className="flex flex-col items-center md:items-end space-y-4">
             <div className="flex space-x-6">
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/freightpx"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -31,23 +38,12 @@ export default function Footer() {
                 />
               </a>
               <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
+                href="mailto:hello@freightpx.com"
+                className="text-[16px] hover:underline hover:text-[var(--primary)] transition-colors"
               >
-                <Icon
-                  name="linkedin"
-                  className="text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
-                />
+                hello@freightpx.com
               </a>
             </div>
-            <a
-              href="mailto:hello@freightpx.com"
-              className="text-[16px] hover:underline hover:text-[var(--primary)] transition-colors"
-            >
-              hello@freightpx.com
-            </a>
           </div>
         </div>
 
