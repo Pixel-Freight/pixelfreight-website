@@ -7,6 +7,21 @@ import { Creations } from "@/components/home/creations";
 import { TrustStrip, ServiceHome } from "@/components/home";
 import dynamic from "next/dynamic";
 
+export const metadata = {
+  title: "Freight Pixel — Web & Game Studio",
+  description:
+    "We build fast, beautiful websites and creative digital products for startups and creators.",
+  openGraph: {
+    title: "Freight Pixel — Web & Game Studio",
+    description:
+      "Building web, apps, and games that blend creativity and performance.",
+    url: "https://freightpx.com",
+    siteName: "Freight Pixel",
+    locale: "en_US",
+    type: "website",
+  },
+};
+
 // Dynamically import the components with no SSR
 const FollowCursor = dynamic(
   () => import("@/components/effects/follow-cursor"),
