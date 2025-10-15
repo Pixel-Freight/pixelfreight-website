@@ -1,15 +1,21 @@
 "use client";
 
-import * as React from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowUp } from 'lucide-react';
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { ScrollReveal } from '@/components/effects/scroll-reveal';
+import { ArrowUp } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { ScrollReveal } from "@/components/effects/scroll-reveal";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -30,7 +36,10 @@ type FormData = z.infer<typeof formSchema>;
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [submitStatus, setSubmitStatus] = React.useState<{ success: boolean; message: string } | null>(null);
+  const [submitStatus, setSubmitStatus] = React.useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -45,21 +54,27 @@ export function ContactForm() {
   const onSubmit = async (data: FormData) => {
     try {
       setIsSubmitting(true);
-      console.log('Form submitted:', data);
+      console.log("Form submitted:", data);
 
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Failed to send message");
 
       setSubmitStatus({
         success: true,
-        message: 'Your message has been sent successfully!'
+        message: "Your message has been sent successfully!",
       });
       form.reset();
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
       setSubmitStatus({
         success: false,
-        message: 'Failed to send message. Please try again.'
+        message: "Failed to send message. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -69,14 +84,21 @@ export function ContactForm() {
   return (
     <ScrollReveal delay={0.5} yOffset={30} duration={1.5}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-10 flex flex-col gap-6 max-w-lg">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="mt-10 flex flex-col gap-6 max-w-lg"
+        >
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Name" disabled={isSubmitting} {...field} />
+                  <Input
+                    placeholder="Name"
+                    disabled={isSubmitting}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -142,17 +164,23 @@ export function ContactForm() {
             disabled={isSubmitting}
             as="button"
           >
-            {isSubmitting ? 'Sending...' : 'Send'}
+            {isSubmitting ? "Sending..." : "Send"}
             <ArrowUp className="ml-2 h-4 w-4" />
           </Button>
 
           {submitStatus && (
-            <div className={`mt-4 p-3 rounded-md ${submitStatus.success ? 'bg-green-900/30 text-green-400' : 'bg-red-900/30 text-red-400'}`}>
+            <div
+              className={`mt-4 p-3 rounded-md ${
+                submitStatus.success
+                  ? "bg-green-900/30 text-green-400"
+                  : "bg-red-900/30 text-red-400"
+              }`}
+            >
               {submitStatus.message}
             </div>
           )}
         </form>
       </Form>
-    </ScrollReveal >
+    </ScrollReveal>
   );
 }
