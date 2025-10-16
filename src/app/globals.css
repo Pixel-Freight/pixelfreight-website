@@ -62,6 +62,16 @@ body:has(.fixed.top-0 + header.top-0) {
   /* Only navbar height */
 }
 
+body.sample-littlestories {
+  padding-top: 0;
+}
+
+body.sample-littlestories > header,
+body.sample-littlestories > footer,
+body.sample-littlestories > div.fixed.top-0 {
+  display: none !important;
+}
+
 /* For code blocks and monospace text */
 code,
 pre,
