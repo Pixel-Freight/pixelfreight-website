@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { littleStoriesPhotos } from "./data";
+import "./seriffont.css";
 
 export function LittleStoriesGallery() {
   const photos = useMemo(() => littleStoriesPhotos, []);
@@ -20,7 +21,7 @@ export function LittleStoriesGallery() {
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-16 px-6 md:px-10 lg:px-12">
         {/* Header */}
         <header className="text-center space-y-4">
-          <h2 className="font-serif text-5xl md:text-6xl text-[#2c2c2c]">
+          <h2 className="font-tnri text-5xl md:text-6xl text-[#2c2c2c]">
             Stories in Light
           </h2>
           <p className="text-[#5b5149] text-base md:text-lg max-w-2xl mx-auto">

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import "./seriffont.css";
 
 export function LittleStoriesContact() {
   const marqueeText =
@@ -45,8 +46,8 @@ export function LittleStoriesContact() {
           <p className="text-xs uppercase tracking-[0.35em] text-[#b2a693]">
             Let’s begin
           </p>
-          <h2 className="font-serif text-4xl md:text-5xl leading-tight">
-            Let’s begin your story
+          <h2 className="font-tnri text-4xl md:text-5xl leading-tight">
+            Your story
           </h2>
           <p className="text-base leading-relaxed text-[#e4e4e4]/80 md:text-lg max-w-md">
             Tell us about your day, your people, and your vision — we’ll listen,

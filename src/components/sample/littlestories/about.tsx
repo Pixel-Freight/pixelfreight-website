@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { aboutPhotos } from "./data";
+import "./seriffont.css";
 
 export function LittleStoriesAbout() {
   const [index, setIndex] = useState(0);
@@ -21,10 +22,10 @@ export function LittleStoriesAbout() {
   return (
     <section
       id="about"
-      className="relative isolate flex flex-col md:flex-row min-h-screen overflow-hidden"
+      className="relative isolate flex flex-col-reverse md:flex-row min-h-screen overflow-hidden"
     >
       {/* Left - full background photo */}
-      <div className="relative flex-2 h-[60vh] md:h-auto">
+      <div className="relative md:flex-2 h-[60vh] md:h-auto">
         <AnimatePresence mode="wait">
           <motion.div
             key={current.id}
@@ -51,7 +52,7 @@ export function LittleStoriesAbout() {
 
       {/* Right - text panel */}
       <div className="flex-3 bg-[#3a372f] text-[#f5f1eb] flex items-center">
-        <div className="relative z-10 mx-24 flex max-w-6xl flex-col gap-10 px-6 md:px-10 lg:px-12 py-24">
+        <div className="relative z-10 xl:mx-24 flex max-w-6xl flex-col gap-10 px-6 md:px-10 lg:px-12 py-24">
           <div className="max-w-lg space-y-6">
             <motion.p
               initial={{ opacity: 0, y: 15 }}
@@ -66,7 +67,7 @@ export function LittleStoriesAbout() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-              className="font-serif text-5xl md:text-6xl leading-tight"
+              className="font-tnri text-5xl md:text-6xl leading-tight"
             >
               Little Stories Studio
             </motion.h2>

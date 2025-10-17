@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { FaInstagram, FaPinterest, FaFacebookF } from "react-icons/fa";
+import "./seriffont.css";
 
 export function LittleStoriesFooter() {
   return (
@@ -70,7 +71,7 @@ export function LittleStoriesFooter() {
 
         {/* Right - Tagline + Social */}
         <div className="flex flex-col items-start justify-between gap-6 text-sm">
-          <p className="italic text-[#5b5149]/80">
+          <p className="font-tnri text-[#5b5149]/80">
             The timeless, elegant images <br />
             you’ll treasure for lifetimes.
           </p>

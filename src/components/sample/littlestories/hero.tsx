@@ -11,6 +11,7 @@ import {
 import { useEffect, useMemo, useRef, useState } from "react";
 import BlurText from "@/components/effects/blur-text";
 import { heroPhotoPool, type LittleStoriesPhoto } from "./data";
+import "./seriffont.css";
 
 type FallingPhoto = LittleStoriesPhoto & {
   instanceId: string;
@@ -202,12 +203,12 @@ export function LittleStoriesHero() {
           delay={100}
           animateBy="words"
           direction="top"
-          className="text-6xl md:text-8xl font-light text-[#2c2c2c]"
+          className="text-6xl md:text-8xl font-light font-tnri text-[#2c2c2c]"
         />
 
         {/* Subtitle appears after delay */}
         <motion.p
-          className="mt-4 text-base md:text-lg italic text-[#5b5149] max-w-xl"
+          className="mt-4 text-base md:text-lg text-[#5b5149] max-w-xl"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}

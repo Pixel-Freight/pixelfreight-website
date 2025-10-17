@@ -109,13 +109,13 @@ export const aboutPhotos = [
   {
     id: "about-1",
     title: "Garden Ceremony",
-    src: "https://images.unsplash.com/photo-1504203700686-0b2f91d1a3d6?auto=format&fit=crop&q=80&w=1200",
+    src: "https://images.unsplash.com/photo-1747885593382-e504492f5741?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687",
     description: "A bride and groom surrounded by gentle afternoon light.",
   },
   {
     id: "about-2",
     title: "The First Look",
-    src: "https://images.unsplash.com/photo-1520848315518-b991dd16a6cf?auto=format&fit=crop&q=80&w=1200",
+    src: "https://images.unsplash.com/photo-1625699052242-a44fa759047a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170",
     description: "An honest, quiet moment between two hearts before the vows.",
   },
   {
